@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body onload="onInit()">
+
+    <h1>Book Shop</h1>
+
+    <button onclick="onAddBook()">Add Book</button>
+
+    <label for="filter-by-title">Filter by title:</label>
+    <input  id="filter-by-title" 
+            type="text" 
+            placeholder="Search by title" 
+            oninput="onSetFilterBy()" />
+
+    <button onclick="onClearFilter()">Clear</button>
+
+    <p class="user-msg"></p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="books-container">
+        </tbody>
+    </table>
+
+    <button onclick="onPrevPage()">Prev</button>
+    <button onclick="onNextPage()">Next</button>
+
+    <footer>
+        <p class="stats"></p>
+    </footer>
+
+    <div class="modal">
+        <h3>Book Details</h3>
+        <p class="modal-title"></p>
+        <p class="modal-price"></p>
+        <button onclick="onCloseModal()">Close</button>
+    </div>
+
+    <script src="js/book.service.js"></script>
+    <script src="js/book.controller.js"></script>
+
+</body>
+
+</html>
