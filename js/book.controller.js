@@ -7,20 +7,30 @@ function onInit() {
 
 function renderBooks() {
     var books = getBooks()
+    var elContainer = document.querySelector('.books-container')
+
+    if (!books.length) {
+        elContainer.innerHTML = `
+            <tr>
+                <td colspan="3">No matching books were found...</td>
+            </tr>
+        `
+        renderStats()
+        return
+    }
 
     var strHTML = books.map(book => `
-  <tr>
-    <td>${book.title}</td>
-    <td>${book.price}</td>
-    <td>
-    <button onclick="onReadBook('${book.id}')">Read</button>
-    <button onclick="onUpdateBook('${book.id}')">Update</button>
-    <button onclick="onRemoveBook('${book.id}')">Delete</button>
-</td>
-  </tr>
-`).join('')
+      <tr>
+        <td>${book.title}</td>
+        <td>${book.price}</td>
+        <td>
+        <button onclick="onReadBook('${book.id}')">Read</button>
+        <button onclick="onUpdateBook('${book.id}')">Update</button>
+        <button onclick="onRemoveBook('${book.id}')">Delete</button>
+        </td>
+      </tr>
+    `).join('')
 
-    var elContainer = document.querySelector('.books-container')
     elContainer.innerHTML = strHTML
     renderStats()
 }
