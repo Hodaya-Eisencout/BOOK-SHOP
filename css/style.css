@@ -22,3 +22,26 @@ footer {
   font-weight: bold;
 }
 
+/* .add-modal {
+  display: none;
+  border: 1px solid black;
+  padding: 10px;
+  background-color: #eee;
+  width: 250px;
+  margin-top: 20px;
+} */
+
+.add-modal {
+  display: none;
+  position: fixed;       
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background-color: #eee;
+  padding: 20px;
+  border: 1px solid black;
+  width: 250px;
+
+  z-index: 100;        
+}

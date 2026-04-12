@@ -49,15 +49,44 @@ function onUpdateBook(bookId) {
 }
 
 function onAddBook() {
-  var title = prompt('Enter book title:')
-  var price = prompt('Enter book price:')
+  var elModal = document.querySelector('.add-modal')
+
+  document.querySelector('#book-title').value = ''
+  document.querySelector('#book-price').value = ''
+  
+  elModal.style.display = 'block'
+}
+
+function onCloseAddModal() {
+  var elModal = document.querySelector('.add-modal')
+  elModal.style.display = 'none'
+}
+
+function onSaveBook() {
+  var elTitle = document.querySelector('#book-title')
+  var elPrice = document.querySelector('#book-price')
+
+  var title = elTitle.value
+  var price = elPrice.value
 
   if (!title || !price) return
 
   addBook(title, +price)
   renderBooks()
+  onCloseAddModal()
   showMsg('Book added successfully')
 }
+
+// function onAddBook() {
+//   var title = prompt('Enter book title:')
+//   var price = prompt('Enter book price:')
+
+//   if (!title || !price) return
+
+//   addBook(title, +price)
+//   renderBooks()
+//   showMsg('Book added successfully')
+// }
 
 function onReadBook(bookId) {
   var book = getBookById(bookId)

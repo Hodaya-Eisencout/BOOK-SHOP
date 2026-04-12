@@ -13,6 +13,19 @@
     <h1>Book Shop</h1>
 
     <button onclick="onAddBook()">Add Book</button>
+    
+    <div class="add-modal">
+    <h3>Add Book</h3>
+
+    <label for="book-title">Title</label>
+    <input id="book-title" type="text" placeholder="Enter title">
+
+    <label for="book-price">Price</label>
+    <input id="book-price" type="number" placeholder="Enter price">
+
+    <button onclick="onSaveBook()">Save</button>
+    <button onclick="onCloseAddModal()">Close</button>
+</div>
 
     <label for="filter-by-title">Filter by title:</label>
     <input  id="filter-by-title" 
