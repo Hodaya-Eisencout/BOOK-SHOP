@@ -18,9 +18,9 @@ function _createBooks() {
     if (!gBooks || !gBooks.length) {
 
         gBooks = [
-            { id: 'b101', title: 'Harry Potter', price: 120 },
-            { id: 'b102', title: 'The Hobbit', price: 90 },
-            { id: 'b103', title: '1984', price: 80 }
+            { id: 'b101', title: 'Harry Potter', price: 120, rating: 0 },
+            { id: 'b102', title: 'The Hobbit', price: 90, rating: 0},
+            { id: 'b103', title: '1984', price: 80, rating: 0 }
         ]
         _saveBooks()
     }
@@ -61,7 +61,8 @@ function addBook(title, price) {
     var book = {
         id: 'b' + Date.now(),
         title: title,
-        price: price
+        price: price,
+        rating: 0
     }
 
     gBooks.push(book)
@@ -120,4 +121,10 @@ function getBooksStats() {
   })
 
   return stats
+}
+
+function updateBookRating(bookId, newRating) {
+    var book = gBooks.find(book => book.id === bookId)
+    book.rating = newRating
+    _saveBooks()
 }

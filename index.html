@@ -13,25 +13,22 @@
     <h1>Book Shop</h1>
 
     <button onclick="onAddBook()">Add Book</button>
-    
+
     <div class="add-modal">
-    <h3>Add Book</h3>
+        <h3>Add Book</h3>
 
-    <label for="book-title">Title</label>
-    <input id="book-title" type="text" placeholder="Enter title">
+        <label for="book-title">Title</label>
+        <input id="book-title" type="text" placeholder="Enter title">
 
-    <label for="book-price">Price</label>
-    <input id="book-price" type="number" placeholder="Enter price">
+        <label for="book-price">Price</label>
+        <input id="book-price" type="number" placeholder="Enter price">
 
-    <button onclick="onSaveBook()">Save</button>
-    <button onclick="onCloseAddModal()">Close</button>
-</div>
+        <button onclick="onSaveBook()">Save</button>
+        <button onclick="onCloseAddModal()">Close</button>
+    </div>
 
     <label for="filter-by-title">Filter by title:</label>
-    <input  id="filter-by-title" 
-            type="text" 
-            placeholder="Search by title" 
-            oninput="onSetFilterBy()" />
+    <input id="filter-by-title" type="text" placeholder="Search by title" oninput="onSetFilterBy()" />
 
     <button onclick="onClearFilter()">Clear</button>
 
@@ -48,7 +45,7 @@
         <tbody class="books-container">
         </tbody>
     </table>
- 
+
     <button onclick="onPrevPage()">Prev</button>
     <button onclick="onNextPage()">Next</button>
 
@@ -60,6 +57,14 @@
         <h3>Book Details</h3>
         <p class="modal-title"></p>
         <p class="modal-price"></p>
+
+        <p>Rating:</p>
+        <div class="rating-container">
+            <button onclick="onDecreaseRating()">-</button>
+            <span class="modal-rating-value">0</span>
+            <button onclick="onIncreaseRating()">+</button>
+        </div>
+
         <button onclick="onCloseModal()">Close</button>
     </div>
 

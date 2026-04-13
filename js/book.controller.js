@@ -1,5 +1,6 @@
-
 'use strict'
+
+var gCurrBookId = null
 
 function onInit() {
     renderBooks()
@@ -77,26 +78,21 @@ function onSaveBook() {
   showMsg('Book added successfully')
 }
 
-// function onAddBook() {
-//   var title = prompt('Enter book title:')
-//   var price = prompt('Enter book price:')
-
-//   if (!title || !price) return
-
-//   addBook(title, +price)
-//   renderBooks()
-//   showMsg('Book added successfully')
-// }
-
 function onReadBook(bookId) {
+  gCurrBookId = bookId
+
   var book = getBookById(bookId)
 
   var elModal = document.querySelector('.modal')
   var elTitle = document.querySelector('.modal-title')
   var elPrice = document.querySelector('.modal-price')
 
+  var elRatingValue = document.querySelector('.modal-rating-value')
+ 
   elTitle.innerText = 'Title: ' + book.title
   elPrice.innerText = 'Price: ' + book.price
+
+  elRatingValue.innerText = book.rating
 
   elModal.style.display = 'block'
 }
@@ -158,4 +154,26 @@ function renderStats() {
     Average: ${stats.average} |
     Cheap: ${stats.cheap}
   `
+}
+
+function onIncreaseRating() {
+  var book = getBookById(gCurrBookId)
+
+  if (book.rating === 5) return
+
+  var newRating = book.rating + 1
+  updateBookRating(gCurrBookId, newRating)
+
+  document.querySelector('.modal-rating-value').innerText = newRating
+}
+
+function onDecreaseRating() {
+  var book = getBookById(gCurrBookId)
+
+  if (book.rating === 0) return
+
+  var newRating = book.rating - 1
+  updateBookRating(gCurrBookId, newRating)
+
+  document.querySelector('.modal-rating-value').innerText = newRating
 }
