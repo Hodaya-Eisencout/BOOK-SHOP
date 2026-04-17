@@ -1,4 +1,3 @@
-
 'use strict'
 
 var gBooks
@@ -6,7 +5,13 @@ var gPageIdx = 0
 var PAGE_SIZE = 5
 
 var gFilterBy = {
-    title: ''
+    title: '',
+    minRating: 0
+}
+
+var gSortBy = {
+    type: '',
+    desc: false
 }
 
 _createBooks()
@@ -23,7 +28,13 @@ function _createBooks() {
             { id: 'b103', title: '1984', price: 80, rating: 0 }
         ]
         _saveBooks()
+        return
     }
+        gBooks.forEach(book => {
+        if (book.rating === undefined) book.rating = 0
+    })
+
+    _saveBooks()
 }
 
 function _loadBooks() {
@@ -38,6 +49,7 @@ function _saveBooks() {
 
 function getBooks() {
   var books = _getFilteredBooks()
+  books = _getSortedBooks(books)
 
   var startIdx = gPageIdx * PAGE_SIZE
   books = books.slice(startIdx, startIdx + PAGE_SIZE)
@@ -93,18 +105,23 @@ function prevPage() {
 
 function setFilterBy(filterBy) {
     gFilterBy = filterBy
+    gPageIdx = 0
 }
 
 function _getFilteredBooks() {
-  var books = gBooks
+    var books = gBooks
 
-  if (gFilterBy.title) {
-    books = gBooks.filter(book =>
-      book.title.toLowerCase().includes(gFilterBy.title.toLowerCase())
-    )
-  }
+    if (gFilterBy.title) {
+        books = books.filter(book =>
+            book.title.toLowerCase().includes(gFilterBy.title.toLowerCase())
+        )
+    }
 
-  return books
+    if (gFilterBy.minRating) {
+        books = books.filter(book => book.rating >= gFilterBy.minRating)
+    }
+
+    return books
 }
 
 function getBooksStats() {
@@ -127,4 +144,31 @@ function updateBookRating(bookId, newRating) {
     var book = gBooks.find(book => book.id === bookId)
     book.rating = newRating
     _saveBooks()
+}
+
+function setSortBy(sortBy) {
+    gSortBy = sortBy
+    gPageIdx = 0
+}
+
+function _getSortedBooks(books) {
+    if (!gSortBy.type) return books
+
+    var sortedBooks = books.slice()
+
+    sortedBooks.sort((book1, book2) => {
+        var val1 = book1[gSortBy.type]
+        var val2 = book2[gSortBy.type]
+
+        if (gSortBy.type === 'title') {
+            val1 = val1.toLowerCase()
+            val2 = val2.toLowerCase()
+        }
+
+        if (val1 > val2) return gSortBy.desc ? -1 : 1
+        if (val1 < val2) return gSortBy.desc ? 1 : -1
+        return 0
+    })
+
+    return sortedBooks
 }

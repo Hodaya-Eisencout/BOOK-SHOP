@@ -103,25 +103,32 @@ function onCloseModal() {
 }
 
 function onSetFilterBy() {
-  var elFilter = document.querySelector('#filter-by-title')
-  var filterBy = {
-    title: elFilter.value
-  }
+    var elTitleFilter = document.querySelector('#filter-by-title')
+    var elRatingFilter = document.querySelector('#filter-by-rating')
 
-  setFilterBy(filterBy)
-  renderBooks()
+    var filterBy = {
+        title: elTitleFilter.value,
+        minRating: +elRatingFilter.value
+    }
+
+    setFilterBy(filterBy)
+    renderBooks()
 }
 
 function onClearFilter() {
-  var elFilter = document.querySelector('#filter-by-title')
-  elFilter.value = ''
+    var elTitleFilter = document.querySelector('#filter-by-title')
+    var elRatingFilter = document.querySelector('#filter-by-rating')
 
-  var filterBy = {
-    title: ''
-  }
+    elTitleFilter.value = ''
+    elRatingFilter.value = '0'
 
-  setFilterBy(filterBy)
-  renderBooks()
+    var filterBy = {
+        title: '',
+        minRating: 0
+    }
+
+    setFilterBy(filterBy)
+    renderBooks()
 }
 
 function onNextPage() {
@@ -176,4 +183,17 @@ function onDecreaseRating() {
   updateBookRating(gCurrBookId, newRating)
 
   document.querySelector('.modal-rating-value').innerText = newRating
+}
+
+function onSetSortBy() {
+    var elSortBy = document.querySelector('#sort-by')
+    var elSortDir = document.querySelector('input[name="sort-dir"]:checked')
+
+    var sortBy = {
+        type: elSortBy.value,
+        desc: elSortDir.value === 'desc'
+    }
+
+    setSortBy(sortBy)
+    renderBooks()
 }

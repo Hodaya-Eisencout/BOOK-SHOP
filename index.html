@@ -30,7 +30,35 @@
     <label for="filter-by-title">Filter by title:</label>
     <input id="filter-by-title" type="text" placeholder="Search by title" oninput="onSetFilterBy()" />
 
+    <label for="filter-by-rating">Min rating:</label>
+    <select id="filter-by-rating" onchange="onSetFilterBy()">
+        <option value="0">All</option>
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+        <option value="4">4+</option>
+        <option value="5">5</option>
+    </select>
+
     <button onclick="onClearFilter()">Clear</button>
+
+    <label for="sort-by">Sort by:</label>
+    <select id="sort-by" onchange="onSetSortBy()">
+        <option value="">None</option>
+        <option value="title">Title</option>
+        <option value="price">Price</option>
+        <option value="rating">Rating</option>
+    </select>
+
+    <label>
+        <input type="radio" name="sort-dir" value="asc" onchange="onSetSortBy()" checked>
+        Asc
+    </label>
+
+    <label>
+        <input type="radio" name="sort-dir" value="desc" onchange="onSetSortBy()">
+        Desc
+    </label>
 
     <p class="user-msg"></p>
 
