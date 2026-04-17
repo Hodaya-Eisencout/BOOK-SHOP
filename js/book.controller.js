@@ -1,6 +1,7 @@
 'use strict'
 
 var gCurrBookId = null
+var gEditedBookId = null
 
 function onInit() {
     renderBooks()
@@ -44,18 +45,31 @@ function onRemoveBook(bookId) {
 }
 
 function onUpdateBook(bookId) {
-  var price = +prompt('Enter new price:')
-  updateBook(bookId, price)
-  renderBooks()
-  showMsg('Book updated successfully')
+  gEditedBookId = bookId
+
+  var book = getBookById(bookId)
+  var elModal = document.querySelector('.add-modal')
+
+  document.querySelector('#book-title').value = book.title
+  document.querySelector('#book-price').value = book.price
+
+  document.querySelector('.modal-title-add').innerText = 'Edit Book'
+  document.querySelector('.save-btn').innerText = 'Save Changes'
+
+  elModal.style.display = 'block'
 }
 
 function onAddBook() {
+  gEditedBookId = null
+  
   var elModal = document.querySelector('.add-modal')
 
   document.querySelector('#book-title').value = ''
   document.querySelector('#book-price').value = ''
   
+  document.querySelector('.modal-title-add').innerText = 'Add Book'
+  document.querySelector('.save-btn').innerText = 'Add'
+
   elModal.style.display = 'block'
 }
 
@@ -69,14 +83,20 @@ function onSaveBook() {
   var elPrice = document.querySelector('#book-price')
 
   var title = elTitle.value
-  var price = elPrice.value
+  var price = +elPrice.value
 
   if (!title || !price) return
 
-  addBook(title, +price)
+  if (gEditedBookId) {
+    updateBook(gEditedBookId, title, price)
+    showMsg('Book updated successfully')
+  } else {
+    addBook(title, price)
+    showMsg('Book added successfully')
+  }
+
   renderBooks()
   onCloseAddModal()
-  showMsg('Book added successfully')
 }
 
 function onReadBook(bookId) {
