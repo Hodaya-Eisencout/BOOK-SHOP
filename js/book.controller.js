@@ -13,7 +13,7 @@ function renderBooks() {
     if (!books.length) {
         elContainer.innerHTML = `
             <tr>
-                <td colspan="3">No matching books were found...</td>
+                <td colspan="4">No matching books were found...</td>
             </tr>
         `
         renderStats()
@@ -24,6 +24,7 @@ function renderBooks() {
       <tr>
         <td>${book.title}</td>
         <td>${book.price}</td>
+        <td>${book.rating}</td>
         <td>
         <button onclick="onReadBook('${book.id}')">Read</button>
         <button onclick="onUpdateBook('${book.id}')">Update</button>
@@ -172,6 +173,7 @@ function onIncreaseRating() {
   updateBookRating(gCurrBookId, newRating)
 
   document.querySelector('.modal-rating-value').innerText = newRating
+  renderBooks()
 }
 
 function onDecreaseRating() {
@@ -183,6 +185,7 @@ function onDecreaseRating() {
   updateBookRating(gCurrBookId, newRating)
 
   document.querySelector('.modal-rating-value').innerText = newRating
+  renderBooks()
 }
 
 function onSetSortBy() {
