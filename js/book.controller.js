@@ -4,6 +4,7 @@ var gCurrBookId = null
 var gEditedBookId = null
 
 function onInit() {
+    readQueryParams()
     renderBooks()
 }
 
@@ -133,6 +134,7 @@ function onSetFilterBy() {
     }
 
     setFilterBy(filterBy)
+    setQueryParams()
     renderBooks()
 }
 
@@ -149,16 +151,19 @@ function onClearFilter() {
     }
 
     setFilterBy(filterBy)
+    setQueryParams()
     renderBooks()
 }
 
 function onNextPage() {
   nextPage()
+  setQueryParams()
   renderBooks()
 }
 
 function onPrevPage() {
   prevPage()
+  setQueryParams()
   renderBooks()
 }
 
@@ -218,5 +223,64 @@ function onSetSortBy() {
     }
 
     setSortBy(sortBy)
+    setQueryParams()
     renderBooks()
+}
+
+function readQueryParams() {
+    const queryParams = new URLSearchParams(window.location.search)
+
+    var filterBy = {
+        title: queryParams.get('title') || '',
+        minRating: +queryParams.get('minRating') || 0
+    }
+
+    var sortBy = {
+        type: queryParams.get('sortField') || '',
+        desc: queryParams.get('sortDir') === 'desc'
+    }
+
+    var pageIdx = +queryParams.get('pageIdx') || 0
+
+    setQueryParamsState(filterBy, sortBy, pageIdx)
+
+    renderQueryParams()
+}
+
+function renderQueryParams() {
+    var filterBy = getFilterBy()
+    var sortBy = getSortBy()
+    
+    document.querySelector('#filter-by-title').value = filterBy.title
+    document.querySelector('#filter-by-rating').value = filterBy.minRating
+
+    document.querySelector('#sort-by').value = sortBy.type
+
+    var sortDir = sortBy.desc ? 'desc' : 'asc'
+    document.querySelector(`input[name="sort-dir"][value="${sortDir}"]`).checked = true
+}
+
+function setQueryParams() {
+    const queryParams = new URLSearchParams()
+
+    const filterBy = getFilterBy()
+    const sortBy = getSortBy()
+    const pageIdx = getPageIdx()
+
+    queryParams.set('title', filterBy.title)
+    queryParams.set('minRating', filterBy.minRating)
+
+    if (sortBy.type) {
+        queryParams.set('sortField', sortBy.type)
+        queryParams.set('sortDir', sortBy.desc ? 'desc' : 'asc')
+    }
+
+    queryParams.set('pageIdx', pageIdx)
+
+    const newUrl =
+        window.location.protocol + "//" +
+        window.location.host +
+        window.location.pathname + '?' + queryParams.toString()
+
+    window.history.pushState({ path: newUrl }, '', newUrl)
 }

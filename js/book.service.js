@@ -173,3 +173,21 @@ function _getSortedBooks(books) {
 
     return sortedBooks
 }
+
+function setQueryParamsState(filterBy, sortBy, pageIdx) {
+    gFilterBy = filterBy
+    gSortBy = sortBy
+    gPageIdx = pageIdx
+}
+
+function getFilterBy() {
+    return gFilterBy
+}
+
+function getSortBy() {
+    return gSortBy
+}
+
+function getPageIdx() {
+    return gPageIdx
+}
