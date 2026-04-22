@@ -23,15 +23,16 @@ function _createBooks() {
     if (!gBooks || !gBooks.length) {
 
         gBooks = [
-            { id: 'b101', title: 'Harry Potter', price: 120, rating: 0 },
-            { id: 'b102', title: 'The Hobbit', price: 90, rating: 0},
-            { id: 'b103', title: '1984', price: 80, rating: 0 }
+            { id: 'b101', title: 'Harry Potter', price: 120, rating: 0, imgUrl: 'img/harry-potter.jpg' },
+            { id: 'b102', title: 'The Hobbit', price: 90, rating: 0, imgUrl: 'img/hobbit.jpg'},
+            { id: 'b103', title: '1984', price: 80, rating: 0, imgUrl: 'img/1984.jpg' }
         ]
         _saveBooks()
         return
     }
         gBooks.forEach(book => {
         if (book.rating === undefined) book.rating = 0
+        if (!book.imgUrl) book.imgUrl = 'img/default-book.jpg'
     })
 
     _saveBooks()
@@ -75,7 +76,8 @@ function addBook(title, price) {
         id: 'b' + Date.now(),
         title: title,
         price: price,
-        rating: 0
+        rating: 0,
+        imgUrl: 'img/default-book.jpg'
     }
 
     gBooks.push(book)

@@ -4,26 +4,27 @@ var gCurrBookId = null
 var gEditedBookId = null
 
 function onInit() {
-    readQueryParams()
-    renderBooks()
+  readQueryParams()
+  renderBooks()
 }
 
 function renderBooks() {
-    var books = getBooks()
-    var elContainer = document.querySelector('.books-container')
+  var books = getBooks()
+  var elContainer = document.querySelector('.books-container')
 
-    if (!books.length) {
-        elContainer.innerHTML = `
+  if (!books.length) {
+    elContainer.innerHTML = `
             <tr>
                 <td colspan="4">No matching books were found...</td>
             </tr>
         `
-        renderStats()
-        return
-    }
+    renderStats()
+    return
+  }
 
-    var strHTML = books.map(book => `
+  var strHTML = books.map(book => `
       <tr>
+        <td><img src="${book.imgUrl}" alt="${book.title}"></td>
         <td>${book.title}</td>
         <td>${book.price}</td>
         <td>${book.rating}</td>
@@ -35,14 +36,14 @@ function renderBooks() {
       </tr>
     `).join('')
 
-    elContainer.innerHTML = strHTML
-    renderStats()
+  elContainer.innerHTML = strHTML
+  renderStats()
 }
 
 function onRemoveBook(bookId) {
-    removeBook(bookId)
-    renderBooks()
-    showMsg('Book removed successfully')
+  removeBook(bookId)
+  renderBooks()
+  showMsg('Book removed successfully')
 }
 
 function onUpdateBook(bookId) {
@@ -62,12 +63,12 @@ function onUpdateBook(bookId) {
 
 function onAddBook() {
   gEditedBookId = null
-  
+
   var elModal = document.querySelector('.add-modal')
 
   document.querySelector('#book-title').value = ''
   document.querySelector('#book-price').value = ''
-  
+
   document.querySelector('.modal-title-add').innerText = 'Add Book'
   document.querySelector('.save-btn').innerText = 'Add'
 
@@ -108,14 +109,15 @@ function onReadBook(bookId) {
   var elModal = document.querySelector('.modal')
   var elTitle = document.querySelector('.modal-title')
   var elPrice = document.querySelector('.modal-price')
-
+  var elBookImg = document.querySelector('.modal-book-img')
   var elRatingValue = document.querySelector('.modal-rating-value')
- 
+
   elTitle.innerText = 'Title: ' + book.title
   elPrice.innerText = 'Price: ' + book.price
-
   elRatingValue.innerText = book.rating
-
+  elBookImg.src = book.imgUrl
+  elBookImg.alt = book.title
+  
   elModal.style.display = 'block'
 }
 
@@ -125,34 +127,34 @@ function onCloseModal() {
 }
 
 function onSetFilterBy() {
-    var elTitleFilter = document.querySelector('#filter-by-title')
-    var elRatingFilter = document.querySelector('#filter-by-rating')
+  var elTitleFilter = document.querySelector('#filter-by-title')
+  var elRatingFilter = document.querySelector('#filter-by-rating')
 
-    var filterBy = {
-        title: elTitleFilter.value,
-        minRating: +elRatingFilter.value
-    }
+  var filterBy = {
+    title: elTitleFilter.value,
+    minRating: +elRatingFilter.value
+  }
 
-    setFilterBy(filterBy)
-    setQueryParams()
-    renderBooks()
+  setFilterBy(filterBy)
+  setQueryParams()
+  renderBooks()
 }
 
 function onClearFilter() {
-    var elTitleFilter = document.querySelector('#filter-by-title')
-    var elRatingFilter = document.querySelector('#filter-by-rating')
+  var elTitleFilter = document.querySelector('#filter-by-title')
+  var elRatingFilter = document.querySelector('#filter-by-rating')
 
-    elTitleFilter.value = ''
-    elRatingFilter.value = '0'
+  elTitleFilter.value = ''
+  elRatingFilter.value = '0'
 
-    var filterBy = {
-        title: '',
-        minRating: 0
-    }
+  var filterBy = {
+    title: '',
+    minRating: 0
+  }
 
-    setFilterBy(filterBy)
-    setQueryParams()
-    renderBooks()
+  setFilterBy(filterBy)
+  setQueryParams()
+  renderBooks()
 }
 
 function onNextPage() {
@@ -214,73 +216,73 @@ function onDecreaseRating() {
 }
 
 function onSetSortBy() {
-    var elSortBy = document.querySelector('#sort-by')
-    var elSortDir = document.querySelector('input[name="sort-dir"]:checked')
+  var elSortBy = document.querySelector('#sort-by')
+  var elSortDir = document.querySelector('input[name="sort-dir"]:checked')
 
-    var sortBy = {
-        type: elSortBy.value,
-        desc: elSortDir.value === 'desc'
-    }
+  var sortBy = {
+    type: elSortBy.value,
+    desc: elSortDir.value === 'desc'
+  }
 
-    setSortBy(sortBy)
-    setQueryParams()
-    renderBooks()
+  setSortBy(sortBy)
+  setQueryParams()
+  renderBooks()
 }
 
 function readQueryParams() {
-    const queryParams = new URLSearchParams(window.location.search)
+  const queryParams = new URLSearchParams(window.location.search)
 
-    var filterBy = {
-        title: queryParams.get('title') || '',
-        minRating: +queryParams.get('minRating') || 0
-    }
+  var filterBy = {
+    title: queryParams.get('title') || '',
+    minRating: +queryParams.get('minRating') || 0
+  }
 
-    var sortBy = {
-        type: queryParams.get('sortField') || '',
-        desc: queryParams.get('sortDir') === 'desc'
-    }
+  var sortBy = {
+    type: queryParams.get('sortField') || '',
+    desc: queryParams.get('sortDir') === 'desc'
+  }
 
-    var pageIdx = +queryParams.get('pageIdx') || 0
+  var pageIdx = +queryParams.get('pageIdx') || 0
 
-    setQueryParamsState(filterBy, sortBy, pageIdx)
+  setQueryParamsState(filterBy, sortBy, pageIdx)
 
-    renderQueryParams()
+  renderQueryParams()
 }
 
 function renderQueryParams() {
-    var filterBy = getFilterBy()
-    var sortBy = getSortBy()
-    
-    document.querySelector('#filter-by-title').value = filterBy.title
-    document.querySelector('#filter-by-rating').value = filterBy.minRating
+  var filterBy = getFilterBy()
+  var sortBy = getSortBy()
 
-    document.querySelector('#sort-by').value = sortBy.type
+  document.querySelector('#filter-by-title').value = filterBy.title
+  document.querySelector('#filter-by-rating').value = filterBy.minRating
 
-    var sortDir = sortBy.desc ? 'desc' : 'asc'
-    document.querySelector(`input[name="sort-dir"][value="${sortDir}"]`).checked = true
+  document.querySelector('#sort-by').value = sortBy.type
+
+  var sortDir = sortBy.desc ? 'desc' : 'asc'
+  document.querySelector(`input[name="sort-dir"][value="${sortDir}"]`).checked = true
 }
 
 function setQueryParams() {
-    const queryParams = new URLSearchParams()
+  const queryParams = new URLSearchParams()
 
-    const filterBy = getFilterBy()
-    const sortBy = getSortBy()
-    const pageIdx = getPageIdx()
+  const filterBy = getFilterBy()
+  const sortBy = getSortBy()
+  const pageIdx = getPageIdx()
 
-    queryParams.set('title', filterBy.title)
-    queryParams.set('minRating', filterBy.minRating)
+  queryParams.set('title', filterBy.title)
+  queryParams.set('minRating', filterBy.minRating)
 
-    if (sortBy.type) {
-        queryParams.set('sortField', sortBy.type)
-        queryParams.set('sortDir', sortBy.desc ? 'desc' : 'asc')
-    }
+  if (sortBy.type) {
+    queryParams.set('sortField', sortBy.type)
+    queryParams.set('sortDir', sortBy.desc ? 'desc' : 'asc')
+  }
 
-    queryParams.set('pageIdx', pageIdx)
+  queryParams.set('pageIdx', pageIdx)
 
-    const newUrl =
-        window.location.protocol + "//" +
-        window.location.host +
-        window.location.pathname + '?' + queryParams.toString()
+  const newUrl =
+    window.location.protocol + "//" +
+    window.location.host +
+    window.location.pathname + '?' + queryParams.toString()
 
-    window.history.pushState({ path: newUrl }, '', newUrl)
+  window.history.pushState({ path: newUrl }, '', newUrl)
 }
