@@ -22,19 +22,23 @@ function renderBooks() {
     return
   }
 
-  var strHTML = books.map(book => `
+  var strHTML = books.map(book => {
+    var stars = '★'.repeat(book.rating) + '☆'.repeat(5 - book.rating)
+
+    return `
       <tr>
         <td><img src="${book.imgUrl}" alt="${book.title}"></td>
         <td>${book.title}</td>
         <td>${book.price}</td>
-        <td>${book.rating}</td>
+        <td>${stars}</td>
         <td>
         <button onclick="onReadBook('${book.id}')">Read</button>
         <button onclick="onUpdateBook('${book.id}')">Update</button>
         <button onclick="onRemoveBook('${book.id}')">Delete</button>
         </td>
       </tr>
-    `).join('')
+    `
+  }).join('')
 
   elContainer.innerHTML = strHTML
   renderStats()
